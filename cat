@@ -1,0 +1,26 @@
+from microbit import *
+import radio
+
+radio.on()
+radio.config(channel = 16)
+
+def encode(text, shift):
+    encoded = ""
+    for c in text:
+        val = ord(c) + shift
+        encoded = encoded + chr(val)
+        
+    return encoded
+
+msg = "Cats"
+code_msg = encode(msg, 3)
+
+clear_msg = encode(code_msg, -3)
+
+radio.send(msg)
+
+while True:
+    msg = radio.receive()
+    if msg:
+        clear_smg = encode(msg, -3)
+        display.scroll(clear_msg, wait=False, loop=True)
